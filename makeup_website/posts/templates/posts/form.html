@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="text-center"> {% if form.instance.pk %}Update Post{% else %}Create Post{% endif %}</h1>
+            <form method="post" enctype="multipart/form-data" action="{% if form.instance.pk %}{% url 'edit_post' form.instance.pk %}{% else %}{% url 'create_post' %}{% endif %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="{{ form.title.id_for_label }}">Title</label>
+                    <input type="text" 
+                           name="{{ form.title.name }}" 
+                           id="{{ form.title.id_for_label }}" 
+                           class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
+                           value="{{ form.title.value|default_if_none:'' }}">
+                    <div class="invalid-feedback">
+                        {% for error in form.title.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.image.id_for_label }}">Image</label>
+                    <input type="file" 
+                           name="{{ form.image.name }}" 
+                           id="{{ form.image.id_for_label }}" 
+                           class="form-control-file {% if form.image.errors %}is-invalid{% endif %}">
+                    <div class="invalid-feedback">
+                        {% for error in form.image.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    <textarea name="{{ form.description.name }}" 
+                              id="{{ form.description.id_for_label }}" 
+                              class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
+                              rows="5">{{ form.description.value|default_if_none:'' }}</textarea>
+                    <div class="invalid-feedback">
+                        {% for error in form.description.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn mt-3" style="background-color: purple; color: white;">
+                    {% if form.instance.pk %}Update Post{% else %}Create Post{% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

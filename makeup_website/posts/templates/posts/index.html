@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center my-4">
+    <h1>Makeup Products</h1>
+</div>
+
+{% if posts %}
+<div class="row">
+    {% for post in posts %}
+    <div class="col-md-4">
+        <div class="card">
+            <a href="/post/{{ post.pk }}/">
+                <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+            </a>
+            <div class="card-body">
+                <h5 class="card-title">{{ post.title }}</h5>
+                <a href="/post/{{ post.pk }}/" class="btn" style="background-color: purple; color: white;">View Details</a>
+                {% if post.user == user %}
+                <a href="/post/{{ post.pk }}/edit/" class="btn btn-warning">Edit</a>
+                <a href="/post/{{ post.pk }}/delete/" class="btn btn-danger">Delete</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="text-center my-5">
+    <h2>No products are available</h2>
+</div>
+{% endif %}
+
+{% endblock %}
